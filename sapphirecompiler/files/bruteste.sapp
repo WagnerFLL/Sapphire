@@ -1,0 +1,22 @@
+@  -------------
+@ Código de teste
+@  -------------
+
+func int min(int a, int b):
+    if not (a>b) and true:
+        return b
+    end
+    return a
+
+func void main():
+
+    int a,b
+
+    show("Digite um valor: ")
+    input(a)
+    show("Digite outro valor: ")
+    input(b)
+
+    show( min(a,b) & " é menor")
+
+end

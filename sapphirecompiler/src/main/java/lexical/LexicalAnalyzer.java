@@ -120,17 +120,6 @@ public class LexicalAnalyzer {
 
     }
 
-    private char nextCharacter() {
-
-        if (this.currentColumn >= line.length()) {
-            this.currentColumn = 0;
-            return '\n';
-        }
-
-        return line.charAt( this.currentColumn++ );
-
-    }
-
     public boolean hasMoreTokens() {
 
             // ver se chegou ao fim do arquivo
@@ -276,14 +265,12 @@ public class LexicalAnalyzer {
 
     }
 
-
     private Character nextChar() {
 
-        if (++currentColumn < line.length()) {
+        if (++currentColumn < line.length())
             return line.charAt(currentColumn);
-        } else {
+        else
             return '\n';
-        }
 
     }
 

@@ -65,6 +65,9 @@ public class Table {
 
         // Caractres especiais
         special.add('/');
+        special.add('>');
+        special.add('<');
+        special.add('=');
         special.add(':');
         special.add('-');
         special.add('+');

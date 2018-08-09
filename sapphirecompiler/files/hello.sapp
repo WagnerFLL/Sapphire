@@ -1,41 +1,5 @@
-(73)-19
-a = -324.2354
-(-32)
-9 --23
-8*-2
-7+-1
-t =-25324
+@ Código de teste
+
 func void main():
-
-    while a <= b:
-        while 12 != -6.9:
-
-    @int ​size
-@
-    float bis = 823747.3434
-    int​[300] arr
-
-    int i
-  show​("Digite o tamanho da sequência (limite de 300)")
-
-    input​(size)
-    for ​i = 0.987, size - 1, :
-                 input(arr[i])
-    end
-
-    char art = 'k'
-    show​("array antes de ser ordenado")
-    for ​i = 0, size - 2, :
-        show(arr[i] & “, ”)
-    end
-    shellsort(arr, size)
-    show​("array apos ser ordenado")
-    for ​i = 0, size - 2, :
-        show(arr[i] & ", ")
-    end
-    show(arr[size - 1])
+    show("Hello world!")
 end
-
-
-
-
