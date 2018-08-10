@@ -1,0 +1,36 @@
+@  -------------
+@ Código de teste
+@  -------------
+
+func void fib(int n):
+    int a = 0
+    int b = 1
+    int aux
+    int i = 0
+    while (a + b) < n:
+        if i > 0:
+            show(",")
+        end
+        if i == 1:
+            show("0")
+        end
+        if i == 1:
+            show("1")
+        end
+        else:
+            aux = a + b
+            show(aux)
+            a = b
+            b = a + b
+        end
+    i++
+    end
+end
+
+
+func void main():
+    int n
+    input(n)
+    fib(n)
+end
+

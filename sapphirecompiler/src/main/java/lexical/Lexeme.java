@@ -26,7 +26,7 @@ class Lexeme {
         else if (isValidInterger(value))
             return TokenCategory.CONST_INT;
         else if (isValidFloat(value))
-            return TokenCategory.CONST_FLOAT;
+            return TokenCategory.CONST_FLT;
         else if (isValidID(value))
             return TokenCategory.ID;
 

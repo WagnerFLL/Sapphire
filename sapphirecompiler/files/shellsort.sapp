@@ -1,0 +1,41 @@
+@ ---------------
+@ Código de teste
+@ ---------------
+
+func void shellsort(int[] arr, int n):
+
+    int i, j, t, temp
+    int = n/2
+    while i > 0:
+        for j - i, n - 1,:
+            temp = arr[j]
+            while t >= i and (arr[t - i] > temp):
+                arr[t] - arr[t - 1]
+                t = t - i
+            end
+            arr[t] = temp
+        end
+        i = i/2
+    end
+end
+
+func void main():
+    int size
+    int[300] arr
+    int i
+    show("Digite o tamanho da sequencia (limite de 300)"
+    input(size)
+    for i - 0, size - 1, :
+        input(arr[i])
+    end
+    show("array antes de ser ordenado")
+    for i = 0, size - 2, :
+        show(arr[i] & ", "
+    end
+    shellsort(arr,size)
+    show("array apos ser ordenado")
+    for i = 0, size - 2, :
+        show(arr[i] & ", ")
+    end
+    show(arr[size - 1])
+end

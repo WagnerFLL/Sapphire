@@ -4,15 +4,13 @@ import CustomExceptions.InvalidCharException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LexicalAnalyzer {
 
     private String path;
-    private List<String> linesList = new ArrayList<>();
     private String currentLine;
     private int columnIndex, lineIndex;
+    private BufferedReader br;
 
     public LexicalAnalyzer(String path) {
         this.path = path;
@@ -20,41 +18,30 @@ public class LexicalAnalyzer {
         this.lineIndex = 0;
     }
 
-    public void readFile() throws IOException {
-
-        BufferedReader br;
+    public void openFile() throws IOException {
 
         br = new BufferedReader(new FileReader(this.path));
 
-        String brLine = br.readLine();
-
-        while (brLine != null) {
-            linesList.add(brLine);
-            brLine = br.readLine();
-        }
-        br.close();
+        currentLine = br.readLine();
 
     }
 
-    public boolean hasMoreTokens() {
+    private void nextLine() throws IOException {
+        lineIndex++;
+        currentLine = br.readLine();
+        columnIndex = 0;
+    }
 
-        // ver se chegou ao fim do arquivo
-        if (lineIndex < linesList.size()) {
+    public boolean hasMoreTokens() throws IOException {
 
-            currentLine = linesList.get(lineIndex);
+        if (currentLine != null) {
 
-            // verifica se o resto da linha é somente espaço em branco
-            // se for vai para a próxima
             while (currentLine.substring(columnIndex).matches("\\s*")){
-                lineIndex++;
-                columnIndex = 0;
-                // se houver uma próxima linha
-                if (linesList.size() > lineIndex)
-                    currentLine = linesList.get(lineIndex);
-                else
+                nextLine();
+                if (currentLine == null)
                     return false;
             }
-            // se há mais caracteres na linha
+
             return columnIndex < currentLine.length();
         }
 
@@ -73,7 +60,7 @@ public class LexicalAnalyzer {
 
     }
 
-    private String getNumber(char c) {
+    private String getNumber(char c) throws IOException {
 
         StringBuilder value = new StringBuilder(String.valueOf(c));
         c = getCharacter();
@@ -93,8 +80,7 @@ public class LexicalAnalyzer {
         }
 
         if (c == '\n'){
-            lineIndex++;
-            columnIndex = 0;
+            nextLine();
         }
         return value.toString();
     }
@@ -130,8 +116,7 @@ public class LexicalAnalyzer {
         else {
 
             if (character == '@'){
-                lineIndex++;
-                columnIndex = 0;
+                nextLine();
                 if (hasMoreTokens())
                     return nextToken();
 

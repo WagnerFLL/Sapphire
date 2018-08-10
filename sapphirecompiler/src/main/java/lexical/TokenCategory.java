@@ -19,7 +19,7 @@ public enum TokenCategory {
     FUNC(15),
     SEPARATOR(16),
     CONST_INT(17),
-    CONST_FLOAT(18),
+    CONST_FLT(18),
     CONST_BOOL(19),
     CONST_STR(20),
     CONST_CHAR(21),
