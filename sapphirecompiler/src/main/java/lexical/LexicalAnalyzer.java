@@ -1,7 +1,9 @@
 package lexical;
 
+import CustomExceptions.InvalidCharException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,266 +11,179 @@ public class LexicalAnalyzer {
 
     private String path;
     private List<String> linesList = new ArrayList<>();
-    private String line;
-    private int currentColumn, currentLine, sizeCurrentLine;
+    private String currentLine;
+    private int columnIndex, lineIndex;
 
     public LexicalAnalyzer(String path) {
         this.path = path;
-        this.currentColumn = 0;
-        this.currentLine = 0;
+        this.columnIndex = 0;
+        this.lineIndex = 0;
     }
 
-    public void readFile() {
+    public void readFile() throws IOException {
 
         BufferedReader br;
 
-        try {
-            br = new BufferedReader(new FileReader(this.path));
+        br = new BufferedReader(new FileReader(this.path));
 
-            String brLine = br.readLine();
+        String brLine = br.readLine();
 
-            while (brLine != null) {
-                linesList.add(brLine);
-                brLine = br.readLine();
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (brLine != null) {
+            linesList.add(brLine);
+            brLine = br.readLine();
         }
-    }
-
-    private boolean isCharToken(String value) {
-
-        if (value.matches("'(.?)'")) return true;
-
-        else if (value.startsWith("'")) System.out.println("Erro: char loucão");
-
-        return false;
-    }
-
-    private boolean isStr(String value) {
-
-        if (value.startsWith("\"") && value.endsWith("\""))
-            return true;
-        else if (value.startsWith("\""))
-            System.out.println("Erro: str loucão");
-
-        return false;
-
-    }
-
-    private boolean isInterger(String value) {
-
-        if (value.matches("(\\d)+")) return true;
-
-        return false;
-
-    }
-
-    private boolean isFloat(String value) {
-
-        if (value.matches("(\\d)+\\.(\\d)+")) return true;
-
-        return false;
-
-    }
-
-    private boolean isID(String value) {
-
-        if (value.matches("[_a-zA-Z][_a-zA-Z0-9]*")) {
-            if (value.length() < 31)
-                return true;
-            else
-                System.out.println("Erro: diminui o nome dessa desgraça aí mlk!");
-
-        }
-
-        return false;
-    }
-
-    private boolean isUnaryNegative(String value, int begin) {
-
-        if (value.equals("-")){
-
-            if (begin > 0){
-                int previous = begin-1;
-                while (line.charAt(previous) == ' ' && previous > 0)previous--;
-                if (Character.toString(line.charAt(previous)).matches("[^a-zA-Z0-9|)]"))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    private TokenCategory discoveryCategory(String value, int begin) {
-
-        if (isUnaryNegative(value, begin))
-            return TokenCategory.OP_UNNEG;
-        else if (Table.map.containsKey(value))
-            return Table.map.get(value);
-        else if (isCharToken(value))
-            return TokenCategory.CONST_CHAR;
-        else if (isStr(value))
-            return TokenCategory.CONST_STR;
-        else if (isInterger(value))
-            return TokenCategory.CONST_INT;
-        else if (isFloat(value))
-            return TokenCategory.CONST_FLOAT;
-        else if (isID(value))
-            return TokenCategory.ID;
-        return null;
+        br.close();
 
     }
 
     public boolean hasMoreTokens() {
 
-            // ver se chegou ao fim do arquivo
-            if (currentLine < linesList.size()) {
+        // ver se chegou ao fim do arquivo
+        if (lineIndex < linesList.size()) {
 
-                line = linesList.get(currentLine);
+            currentLine = linesList.get(lineIndex);
 
-                // verifica se o resto da linha é somente espaço em branco
-                // se for vai para a próxima
-
-                while (line.substring(currentColumn).matches("\\s*")){
-                    currentLine++;
-                    currentColumn = 0;
-                    // se houver uma próxima linha
-                    if (linesList.size() > currentLine)
-                        line = linesList.get(currentLine);
-                    else
-                        return false;
-                }
-                // se há mais caracteres na linha
-                if (currentColumn < line.length()) {
-                    return true;
-                }
+            // verifica se o resto da linha é somente espaço em branco
+            // se for vai para a próxima
+            while (currentLine.substring(columnIndex).matches("\\s*")){
+                lineIndex++;
+                columnIndex = 0;
+                // se houver uma próxima linha
+                if (linesList.size() > lineIndex)
+                    currentLine = linesList.get(lineIndex);
+                else
+                    return false;
             }
-
+            // se há mais caracteres na linha
+            return columnIndex < currentLine.length();
+        }
 
         return false;
-
     }
 
     private char ignoreBlankSpace() {
-        char c = line.charAt(currentColumn);
-        while (c == ' ') c = nextChar();
+        char c = currentLine.charAt(columnIndex);
+        while (c == ' ') c = getCharacter();
         return c;
     }
 
     private boolean isNumber(char c){
-        if (Character.toString(c).matches("\\d"))
-            return true;
-        return false;
+
+        return Character.toString(c).matches("\\d");
+
     }
 
     private String getNumber(char c) {
-        String value = String.valueOf(c);
-        c = nextChar();
+
+        StringBuilder value = new StringBuilder(String.valueOf(c));
+        c = getCharacter();
+
         while (isNumber(c)) {
-            value += c;
-            c = nextChar();
+            value.append(c);
+            c = getCharacter();
         }
 
         if (c == '.') {
-            value += c;
-            c = nextChar();
+            value.append(c);
+            c = getCharacter();
             while (isNumber(c)) {
-                value += c;
-                c = nextChar();
+                value.append(c);
+                c = getCharacter();
             }
         }
+
         if (c == '\n'){
-            currentLine++;
-            currentColumn = 0;
+            lineIndex++;
+            columnIndex = 0;
         }
-        return value;
+        return value.toString();
     }
 
     private String getName(char c) {
 
-        String value = "";
+        StringBuilder value = new StringBuilder();
 
         while (!Table.special.contains(c)) {
-            value += c;
-            c = nextChar();
+            value.append(c);
+            c = getCharacter();
 
             if (c == '\n') break;
         }
 
-        return value;
+        return value.toString();
     }
 
-    public Token nextToken() {
+    public Token nextToken()  throws Exception {
 
-        String lexeme = "";
+        StringBuilder lexeme = new StringBuilder();
 
         // Ignora sequ?ncia de espa?os vazios
         char character = ignoreBlankSpace();
-        Token token = new Token(currentColumn,currentLine);
+        Token token = new Token(columnIndex+1, lineIndex+1);
 
         if (isNumber(character))
-            lexeme = getNumber(character);
+            lexeme = new StringBuilder(getNumber(character));
 
         else if (!Table.special.contains(character))
-            lexeme += getName(character);
+            lexeme.append(getName(character));
 
-        else if (lexeme == ""){
+        else {
 
             if (character == '@'){
-                currentLine++;
-                currentColumn = 0;
+                lineIndex++;
+                columnIndex = 0;
                 if (hasMoreTokens())
                     return nextToken();
 
             } else if (character == '\''){
-                lexeme += character;
-                character = nextChar();
-                lexeme += character;
-                character = nextChar();
+                lexeme.append(character);
+                character = getCharacter();
+                lexeme.append(character);
+                character = getCharacter();
 
                 if (character == '\'') {
-                    lexeme += character;
-                    currentColumn++;
+                    lexeme.append(character);
+                    columnIndex++;
                 }
                 else
-                    System.out.println("Erro");
+                    throw new InvalidCharException("Char inválido. " +
+                            "Apóstrofo esperado, mas não encontrado!");
 
             } else if (character == '"'){
-                lexeme += character;
-                character = nextChar();
+                lexeme.append(character);
+                character = getCharacter();
 
                 while (character != '"'){
-                    lexeme += character;
-                    character = nextChar();
+                    lexeme.append(character);
+                    character = getCharacter();
                 }
-                lexeme += character;
-                currentColumn++;
+                lexeme.append(character);
+                columnIndex++;
 
             } else if (character == '<' || character == '>' || character == '=' || character == '!'){
-                lexeme += character;
-                character = nextChar();
+                lexeme.append(character);
+                character = getCharacter();
                 if (character == '=') {
-                    lexeme += character;
-                    currentColumn++;
+                    lexeme.append(character);
+                    columnIndex++;
                 }
             } else {
-                lexeme += character;
-                currentColumn++;
+                lexeme.append(character);
+                columnIndex++;
             }
         }
 
-        token.setLexeme(lexeme);
-        token.setCategory(discoveryCategory(lexeme,token.getColumn()));
+        token.setLexeme(lexeme.toString());
+        token.setCategory(new Lexeme(lexeme.toString())
+                .getCategory(currentLine,token.getColumn()));
 
         return token;
 
     }
 
-    private Character nextChar() {
-
-        if (++currentColumn < line.length())
-            return line.charAt(currentColumn);
+    private Character getCharacter() {
+        if (++columnIndex < currentLine.length())
+            return currentLine.charAt(columnIndex);
         else
             return '\n';
 

@@ -12,7 +12,6 @@ public class Token {
         this.column = currentColumn;
     }
 
-
     public TokenCategory getCategory() {
         return category;
     }

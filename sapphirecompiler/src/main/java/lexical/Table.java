@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Table {
+class Table {
 
-    public static Map<String, TokenCategory> map = new HashMap<>();
-    public static List<Character> special = new ArrayList<Character>();
+    static Map<String, TokenCategory> map = new HashMap<>();
+    static List<Character> special = new ArrayList<>();
 
 
     static {

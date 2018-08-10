@@ -2,8 +2,10 @@ package syntactic;
 
 import lexical.LexicalAnalyzer;
 import lexical.Token;
+import lexical.TokenCategory;
 
-import java.util.Scanner;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class SyntaticAnalyzer {
 
@@ -14,12 +16,23 @@ public class SyntaticAnalyzer {
     }
 
     public void run() {
-        this.lexical.readFile();
-        while (lexical.hasMoreTokens()){
-            Scanner a = new Scanner(System.in);
-            a.nextLine();
-            Token token = lexical.nextToken();
-            System.out.println(token.getCategory() + "  e lexema: |" + token.getLexeme() + "|");
+
+        NumberFormat formatter = new DecimalFormat("0000");
+
+        try {
+            this.lexical.readFile();
+            while (lexical.hasMoreTokens()){
+                Token token = lexical.nextToken();
+                TokenCategory ctg = token.getCategory();
+                System.out.println("[" + formatter.format(token.getLine()) + ", " +
+                                    formatter.format(token.getColumn()) + "]" +
+                                    " (" + formatter.format(ctg.getCategoryValue()) +
+                                    ", " + ctg + ") " +
+                                    token.getLexeme());
+
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 

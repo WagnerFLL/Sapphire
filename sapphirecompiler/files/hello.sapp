@@ -1,5 +1,4 @@
 @ Código de teste
-
 func void main():
     show("Hello world!")
 end
