@@ -23,13 +23,14 @@ public class LexicalAnalyzer {
         br = new BufferedReader(new FileReader(this.path));
 
         currentLine = br.readLine();
-
+        System.out.println(currentLine);
     }
 
     private void nextLine() throws IOException {
         lineIndex++;
         currentLine = br.readLine();
         columnIndex = 0;
+        System.out.println("\n"+currentLine);
     }
 
     public boolean hasMoreTokens() throws IOException {
@@ -37,10 +38,12 @@ public class LexicalAnalyzer {
         if (currentLine != null) {
 
             while (currentLine.substring(columnIndex).matches("\\s*")){
+
                 nextLine();
                 if (currentLine == null)
                     return false;
             }
+
 
             return columnIndex < currentLine.length();
         }
@@ -103,7 +106,6 @@ public class LexicalAnalyzer {
 
         StringBuilder lexeme = new StringBuilder();
 
-        // Ignora sequ?ncia de espa?os vazios
         char character = ignoreBlankSpace();
         Token token = new Token(columnIndex+1, lineIndex+1);
 

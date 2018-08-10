@@ -3,10 +3,7 @@
 @  -------------
 
 func void fib(int n):
-    int a = 0
-    int b = 1
-    int aux
-    int i = 0
+    int a = 0, b = 1, i = 0, aux
     while (a + b) < n:
         if i > 0:
             show(",")
@@ -23,7 +20,7 @@ func void fib(int n):
             a = b
             b = a + b
         end
-    i++
+    i = 1 + i
     end
 end
 

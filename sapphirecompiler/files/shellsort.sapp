@@ -5,7 +5,7 @@
 func void shellsort(int[] arr, int n):
 
     int i, j, t, temp
-    int = n/2
+    int = (n/2)
     while i > 0:
         for j - i, n - 1,:
             temp = arr[j]
@@ -15,7 +15,7 @@ func void shellsort(int[] arr, int n):
             end
             arr[t] = temp
         end
-        i = i/2
+        i = (i/2)
     end
 end
 

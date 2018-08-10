@@ -25,13 +25,12 @@ public class SyntaticAnalyzer {
         NumberFormat formatter = new DecimalFormat("0000");
 
 
-
         try {
             this.lexical.openFile();
             while (lexical.hasMoreTokens()){
                 Token token = lexical.nextToken();
                 TokenCategory ctg = token.getCategory();
-                System.out.println("[" + formatter.format(token.getLine()) + ", " +
+                System.out.println("        [" + formatter.format(token.getLine()) + ", " +
                                     formatter.format(token.getColumn()) + "]" +
                                     " (" + formatter.format(ctg.getCategoryValue()) +
                                     ", " + padRight(ctg) + ") " +
