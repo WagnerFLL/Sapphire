@@ -34,7 +34,7 @@ public class SyntaticAnalyzer {
                                     formatter.format(token.getColumn()) + "]" +
                                     " (" + formatter.format(ctg.getCategoryValue()) +
                                     ", " + padRight(ctg) + ") " +
-                                    token.getLexeme());
+                                    "{" + token.getLexeme() + "}");
 
             }
         }catch (Exception e){
