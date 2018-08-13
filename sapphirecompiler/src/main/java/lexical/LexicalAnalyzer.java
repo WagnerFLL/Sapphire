@@ -30,7 +30,8 @@ public class LexicalAnalyzer {
         lineIndex++;
         currentLine = br.readLine();
         columnIndex = 0;
-        System.out.println("\n"+currentLine);
+        if (currentLine != null)
+            System.out.println("\n"+currentLine);
     }
 
     public boolean hasMoreTokens() throws IOException {

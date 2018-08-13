@@ -1,9 +1,6 @@
 package lexical;
 
-import CustomExceptions.InvalidCharException;
-import CustomExceptions.InvalidFloatFormatException;
-import CustomExceptions.InvalidLexemeException;
-import CustomExceptions.InvalidStringException;
+import CustomExceptions.*;
 
 class Lexeme {
 
@@ -72,13 +69,13 @@ class Lexeme {
 
     }
 
-    private boolean isValidID(String value) {
+    private boolean isValidID(String value) throws InvalidIDException {
 
         if (value.matches("[_a-zA-Z][_a-zA-Z0-9]*")) {
             if (value.length() < 31)
                 return true;
             else
-                System.out.println("Erro: diminui o nome dessa desgraça aí mlk!");
+                throw new InvalidIDException("O nome possui mais que 30 caracteres.");
 
         }
 
@@ -90,11 +87,11 @@ class Lexeme {
         if (value.equals("-")){
 
             if (begin > 0){
-                int previous = begin-1;
+                int previous = begin-2;
                 while (currentLine.charAt(previous) == ' ' && previous > 0)
                     previous--;
 
-                return Character.toString(currentLine.charAt(previous)).matches("[^a-zA-Z0-9|)]");
+                return !Character.toString(currentLine.charAt(previous)).matches("[a-zA-Z0-9|)|\\]]");
             }
         }
         return false;
