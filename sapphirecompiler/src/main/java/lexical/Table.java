@@ -34,8 +34,8 @@ class Table {
         map.put("&", TokenCategory.OP_CONCAT);
 
         // Delimitadores
-        map.put("(", TokenCategory.BEGIN_PARM);
-        map.put(")", TokenCategory.END_PARM);
+        map.put("(", TokenCategory.BEGIN_PARAM);
+        map.put(")", TokenCategory.END_PARAM);
         map.put("[", TokenCategory.BEGIN_ARR);
         map.put("]", TokenCategory.END_ARR);
         map.put("@", TokenCategory.COMMENT);

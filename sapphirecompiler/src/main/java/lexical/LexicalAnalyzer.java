@@ -23,15 +23,15 @@ public class LexicalAnalyzer {
         br = new BufferedReader(new FileReader(this.path));
 
         currentLine = br.readLine();
-        System.out.println(currentLine);
+//        System.out.println(currentLine);
     }
 
     private void nextLine() throws IOException {
         lineIndex++;
         currentLine = br.readLine();
         columnIndex = 0;
-        if (currentLine != null)
-            System.out.println("\n"+currentLine);
+//        if (currentLine != null)
+//            System.out.println("\n"+currentLine);
     }
 
     public boolean hasMoreTokens() throws IOException {
@@ -44,11 +44,8 @@ public class LexicalAnalyzer {
                 if (currentLine == null)
                     return false;
             }
-
-
             return columnIndex < currentLine.length();
         }
-
         return false;
     }
 
