@@ -42,7 +42,8 @@ public enum TokenCategory {
     INS_WHILE(38),
     INS_FOR(39),
     INS_RETURN(40),
-    COMMENT(41);
+    EOF(41),
+    COMMENT(42);
 
     private int value;
 

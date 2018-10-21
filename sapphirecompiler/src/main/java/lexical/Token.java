@@ -12,6 +12,10 @@ public class Token {
         this.column = currentColumn;
     }
 
+    public Token(TokenCategory tokenCategory) {
+        this.category = tokenCategory;
+    }
+
     public TokenCategory getCategory() {
         return category;
     }
