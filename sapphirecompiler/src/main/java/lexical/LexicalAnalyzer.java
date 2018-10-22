@@ -31,7 +31,7 @@ public class LexicalAnalyzer {
         currentLine = br.readLine();
         columnIndex = 0;
         if (currentLine != null)
-            System.out.format("\n|%04d|  %s\n",lineIndex,currentLine.trim());
+            System.out.format("|%04d|  %s\n",lineIndex,currentLine.trim());
     }
 
     public boolean hasMoreTokens() throws IOException {

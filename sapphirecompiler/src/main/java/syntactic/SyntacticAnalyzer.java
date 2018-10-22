@@ -8,7 +8,6 @@ import lexical.TokenCategory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class SyntacticAnalyzer {
@@ -29,9 +28,6 @@ public class SyntacticAnalyzer {
         this.transitions = SLRTableTransition.transitions;
     }
 
-    public static String padRight(TokenCategory s) {
-        return String.format("%1$-" + 10 + "s", s);
-    }
     public void run() {
 
         try {
@@ -42,21 +38,19 @@ public class SyntacticAnalyzer {
             Token currentTK;
             Node headStack;
             String action;
-            Scanner ik = new Scanner(System.in);
 
             if (this.lexical.hasMoreTokens())
                 currentTK = lexical.nextToken();
             else return;
 
             while (!stack.get().empty()) {
-                ik.nextLine();
 
                 headStack = stack.get().peek();
 
                 action = actionTable[headStack.state][currentTK.getCategory().getCategoryValue() - 1];
 
                 if (action.startsWith("s")) {
-                    System.out.format("Empilha              [%04d, %04d] (%04d, %10s) {%s}\n",currentTK.getLine(), currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
+                    System.out.format("              [%04d, %04d] (%04d,%11s) {%s}\n",currentTK.getLine(), currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
                     int state = Integer.valueOf(action.replace("s", ""));
                     stack.get().push(new Node(state, currentTK));
 
@@ -66,7 +60,7 @@ public class SyntacticAnalyzer {
                 } else if (action.startsWith("r")) {
                     int codeProd = Integer.valueOf(action.replace("r", ""));
                     Production production = productions.get(codeProd);
-                    System.out.println("Reduz          "+production.text);
+                    System.out.println("          "+production.text);
                     int nRemoves = production.len;
                     for (int i = 0; i < nRemoves; i++) stack.get().pop();
 
