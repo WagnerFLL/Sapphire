@@ -23,7 +23,7 @@ public class LexicalAnalyzer {
         br = new BufferedReader(new FileReader(this.path));
 
         currentLine = br.readLine();
-        System.out.format("|%04d|  %s\n",lineIndex,currentLine.trim());
+        System.out.format("|%04d|  %s\n",lineIndex+1,currentLine.trim());
     }
 
     private void nextLine() throws IOException {
