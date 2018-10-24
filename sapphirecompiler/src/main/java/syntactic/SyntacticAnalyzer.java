@@ -8,6 +8,7 @@ import lexical.TokenCategory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class SyntacticAnalyzer {
@@ -44,13 +45,11 @@ public class SyntacticAnalyzer {
             else return;
 
             while (!stack.get().empty()) {
-
                 headStack = stack.get().peek();
-
-                action = actionTable[headStack.state][currentTK.getCategory().getCategoryValue() - 1];
+                action = actionTable[headStack.state][currentTK.getCategory().getCategoryValue()];
 
                 if (action.startsWith("s")) {
-                    System.out.format("              [%04d, %04d] (%04d,%11s) {%s}\n",currentTK.getLine(), currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
+                    System.out.format("              [%04d, %04d] (%04d,%11s) {%s}\n",currentTK.getLine()+1, currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
                     int state = Integer.valueOf(action.replace("s", ""));
                     stack.get().push(new Node(state, currentTK));
 
