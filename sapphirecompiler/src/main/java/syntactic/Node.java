@@ -4,9 +4,9 @@ import lexical.Token;
 
 class Node {
 
-    public int state;
-    public String nonTerminal;
-    public Token token;
+    int state;
+    String nonTerminal;
+    Token token;
 
     Node(int state) {
         this.state = state;

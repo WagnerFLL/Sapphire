@@ -7,7 +7,7 @@ public class Token {
     private int line;
     private int column;
 
-    public Token(int currentColumn, int currentLine) {
+    Token(int currentColumn, int currentLine) {
         this.line = currentLine;
         this.column = currentColumn;
     }
@@ -20,7 +20,7 @@ public class Token {
         return category;
     }
 
-    public void setCategory(TokenCategory category) {
+    void setCategory(TokenCategory category) {
         this.category = category;
     }
 
@@ -36,7 +36,7 @@ public class Token {
         return lexeme;
     }
 
-    public void setLexeme(String lexeme) {
+    void setLexeme(String lexeme) {
         this.lexeme = lexeme;
     }
 }

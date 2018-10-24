@@ -1,5 +1,6 @@
 package syntactic;
 
+import CustomExceptions.SyntacticError;
 import Grammar.Grammar;
 import Grammar.Production;
 import lexical.LexicalAnalyzer;
@@ -8,13 +9,12 @@ import lexical.TokenCategory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class SyntacticAnalyzer {
 
-    private LexicalAnalyzer lexical;
     private final ThreadLocal<Stack<Node>> stack = new ThreadLocal<>();
+    private LexicalAnalyzer lexical;
     private String[][] actionTable;
     private List<Production> productions;
     private Map<String, Integer> map;
@@ -49,7 +49,8 @@ public class SyntacticAnalyzer {
                 action = actionTable[headStack.state][currentTK.getCategory().getCategoryValue()];
 
                 if (action.startsWith("s")) {
-                    System.out.format("              [%04d, %04d] (%04d,%11s) {%s}\n",currentTK.getLine()+1, currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
+                    System.out.format("              [%04d, %04d] (%04d,%11s) {%s}\n", currentTK.getLine() + 1, currentTK.getColumn(), currentTK.getCategory().getCategoryValue(), currentTK.getCategory(), currentTK.getLexeme());
+
                     int state = Integer.valueOf(action.replace("s", ""));
                     stack.get().push(new Node(state, currentTK));
 
@@ -57,9 +58,11 @@ public class SyntacticAnalyzer {
                     else currentTK = new Token(TokenCategory.EOF);
 
                 } else if (action.startsWith("r")) {
+
                     int codeProd = Integer.valueOf(action.replace("r", ""));
                     Production production = productions.get(codeProd);
-                    System.out.println("          "+production.text);
+                    System.out.println("          " + production.text);
+
                     int nRemoves = production.len;
                     for (int i = 0; i < nRemoves; i++) stack.get().pop();
 
@@ -70,14 +73,15 @@ public class SyntacticAnalyzer {
                 } else if (action.equals("acc")) {
                     System.out.println("\n -------- ACC ---------");
                     break;
+
                 } else {
-                    System.out.println("Erro.");
+                    throw new SyntacticError("Ação inválida.");
                 }
             }
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
